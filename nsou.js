@@ -77,7 +77,7 @@
 		for( var i in list ){
 			var index = list[i].search(/\=/);
 			if( list[i].substring(0,index) == _key )
-				return list[i].substring(index+1);
+				return unescape(list[i].substring(index+1));
 		}
 		return null;
 	}
