@@ -1,6 +1,21 @@
 (function(){
 
-	var _NS = function(){};
+	var NS = function(){};
+
+	/*
+	* 判断 arr 数组 有没有存在 num
+	* 
+	* author: 欧阳逸滨
+	* date: 2015-8-14 17:23:32
+	*/
+	NS.prototype.findArrays = function(num, arr) {
+		for( var i in arr ){
+			if( arr[i] == num ){
+				return true;
+			}
+		}
+		return false;
+	};
 
 	/*
 	* 判断 a,b 两个数组里面的元素是否全部相等。
@@ -8,7 +23,7 @@
 	* author: 欧阳逸滨
 	* date: 2015-8-13 18:36:20
 	*/
-	_NS.prototype.equalArrays = function(a, b){
+	NS.prototype.equalArrays = function(a, b){
 		if( a.length != b.length )
 			return false;
 		for( var i=0 ; i<a.length ; i++ ){
@@ -25,7 +40,7 @@
 	* author: 欧阳逸滨
 	* date: 2015-8-13 18:37:49
 	*/
-	_NS.prototype.SetCookie = function(_key, _value, _spend, _str){
+	NS.prototype.SetCookie = function(_key, _value, _spend, _str){
 		if(_key != ""){
 			var date = new Date();
 			var expireT = 0;
@@ -57,7 +72,7 @@
 	* author: 欧阳逸滨
 	* date: 2015-8-13 19:29:58
 	*/
-	_NS.prototype.GetCookie = function(_key){
+	NS.prototype.GetCookie = function(_key){
 		var list = document.cookie.split("; ");
 		for( var i in list ){
 			var index = list[i].search(/\=/);
@@ -67,7 +82,7 @@
 		return null;
 	}
 
-	_NS.prototype.GetNowTime = function(){
+	NS.prototype.GetNowTime = function(){
 		var Time = new Date();
 		/*
 		* .getFullYear() = 年
@@ -84,7 +99,7 @@
 	* author: 欧阳逸滨
 	* date: 2015-8-13 19:11:44
 	*/
-	_NS.prototype.MySubStr = function(str, len){
+	NS.prototype.MySubStr = function(str, len){
 		var len2 = len;
 		var str2 = "";
 		var ch = '';
@@ -105,6 +120,6 @@
 		return str2;
 	}
 
-	window.NSOU = new _NS();
+	window.NSOU = new NS();
 
 })();
