@@ -123,3 +123,74 @@
 	window.NSOU = new NS();
 
 })();
+
+
+/*
+* 以下内容为待整理。************** ↓↓
+*/
+
+// 判断浏览器是否支持LocalStorage ，如果支持，将信息存入LocalStorage ，负责存入cookie
+// 仅作字符串存贮，存入cookie时默认存入'/'path下，如果有特使要求可以传递参数
+
+var localInfo = {
+	set: function(key, value, cookieInfo) {
+		var isLocalStorage = localInfo.getIsLocalStorage();
+		if (isLocalStorage) {
+			//当前浏览器支持localStorage
+			var storage = window.localStorage;
+			storage.setItem(key, value);
+		} else {
+			//当前浏览器不支持localStorage，将信息存入cookie
+			var path = '/'
+			var expires = localInfo.getExpires();
+			if (cookieInfo) {
+				path = cookieInfo.path || '/';
+				expires = cookieInfo.expires || expires;
+			}
+			document.cookie = key + '=' + escape(value) + ';expires=' + expires + ';Path=' + path;
+		}
+	},
+	get: function(key) {
+		var isLocalStorage = localInfo.getIsLocalStorage();
+		if (isLocalStorage) {
+			//当前浏览器支持localStorage
+			var storage = window.localStorage;
+			return storage.getItem(key);
+		} else {
+			//当前浏览器不支持localStorage，将信息存入cookie
+			var strCookie = document.cookie;
+			var arrCookie = strCookie.split("; ");
+			for (var i = 0; i < arrCookie.length; i++) {
+				var arr = arrCookie[i].split("=");
+				if (arr[0] == key)
+					return unescape(arr[1]);
+			}
+			return "";
+		}
+	},
+	remove: function(key, cookieInfo) {
+		var isLocalStorage = localInfo.getIsLocalStorage();
+		if (isLocalStorage) {
+			//当前浏览器支持localStorage
+			var storage = window.localStorage;
+			storage.removeItem(key);
+		} else {
+			//当前浏览器不支持localStorage，将信息存入cookie
+			var path = '/'
+			if (cookieInfo) {
+				path = cookieInfo.path || '/';
+			}
+			document.cookie = key + '="";expires=-1;Path=' + path;
+		}
+	},
+	getIsLocalStorage: function() {
+		return !!window.localStorage;
+	},
+	getExpires: function() {
+		var date = new Date();
+		var expiresDays = 1000;
+		date.setTime(date.getTime() + expiresDays * 24 * 3600 * 1000);
+		var expires_time = date.toGMTString();
+		return expires_time;
+	}
+};
